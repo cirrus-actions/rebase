@@ -4,7 +4,7 @@
 
 After installation simply comment `/rebase` to trigger the action:
 
-![rebase-action](https://user-images.githubusercontent.com/989066/51546613-89c38100-1e32-11e9-908c-c0cc69371f3a.gif)
+![rebase-action](https://user-images.githubusercontent.com/989066/51547853-14a57b00-1e35-11e9-841d-33114f0f0bd5.gif)
 
 # Limitations
 
