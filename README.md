@@ -18,7 +18,7 @@ Due to current [limitations of GitHub Actions](https://developer.github.com/acti
 
 To configure the action simply add the following lines to your `.github/main.workflow` workflow file:
 
-```
+```hcl
 workflow "Automatic Rebase" {
   on = "issue_comment"
   resolves = "Rebase"
