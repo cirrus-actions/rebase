@@ -70,4 +70,4 @@ git checkout -b $HEAD_BRANCH origin/$HEAD_BRANCH
 git rebase origin/$BASE_BRANCH
 
 # push back
-git push --force
+git push --force-with-lease
