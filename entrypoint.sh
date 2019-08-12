@@ -3,11 +3,11 @@
 set -e
 
 # skip if no /rebase
-echo "Checking if contains '/rebase' command..."
+echo "Checking if comment contains '/rebase' command..."
 (jq -r ".comment.body" "$GITHUB_EVENT_PATH" | grep -Fq "/rebase") || exit 78
 
 # skip if not a PR
-echo "Checking if a PR command..."
+echo "Checking if issue is a pull request..."
 (jq -r ".issue.pull_request.url" "$GITHUB_EVENT_PATH") || exit 78
 
 if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
