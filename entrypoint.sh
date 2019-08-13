@@ -2,17 +2,20 @@
 
 set -e
 
+# See: https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses
+NEUTRAL_EXIT_CODE=78
+
 # skip if no /rebase
 echo "Checking if comment contains '/rebase' command..."
-(jq -r ".comment.body" "$GITHUB_EVENT_PATH" | grep -Fq "/rebase") || exit 78
+(jq -r ".comment.body" "$GITHUB_EVENT_PATH" | grep -Fq "/rebase") || exit $NEUTRAL_EXIT_CODE
 
 # skip if not a PR
 echo "Checking if issue is a pull request..."
-(jq -r ".issue.pull_request.url" "$GITHUB_EVENT_PATH") || exit 78
+(jq -r ".issue.pull_request.url" "$GITHUB_EVENT_PATH") || exit $NEUTRAL_EXIT_CODE
 
 if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
 	echo "This is not a new comment event!"
-	exit 78
+	exit $NEUTRAL_EXIT_CODE
 fi
 
 PR_NUMBER=$(jq -r ".issue.number" "$GITHUB_EVENT_PATH")
