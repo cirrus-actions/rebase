@@ -10,14 +10,17 @@ After installation simply comment `/rebase` to trigger the action:
 
 To configure the action simply add the following lines to your `.github/main.workflow` workflow file:
 
-```hcl
-workflow "Automatic Rebase" {
-  on = "issue_comment"
-  resolves = "Rebase"
-}
-
-action "Rebase" {
-  uses = "docker://cirrusactions/rebase:latest"
-  secrets = ["GITHUB_TOKEN"]
-}
+```yml
+on: issue_comment
+name: Automatic Rebase
+jobs:
+  rebase:
+    name: Rebase
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Automatic Rebase
+      uses: cirrus-actions/rebase@1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
