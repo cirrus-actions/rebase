@@ -8,7 +8,7 @@ After installation simply comment `/rebase` to trigger the action:
 
 # Installation
 
-To configure the action simply add the following lines to your `.github/main.workflow` workflow file:
+To configure the action simply add the following lines to your `.github/workflows/rebase.yml` workflow file:
 
 ```yml
 on: issue_comment
