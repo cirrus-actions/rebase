@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Automatic Rebase
-      uses: cirrus-actions/rebase@1.1
+      uses: cirrus-actions/rebase@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
