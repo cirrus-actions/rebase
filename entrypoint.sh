@@ -2,8 +2,9 @@
 
 set -e
 
-# See: https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses
-NEUTRAL_EXIT_CODE=78
+# Workaround unitl new Actions support neutral strategy
+# See how it was before: https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses
+NEUTRAL_EXIT_CODE=0
 
 # skip if no /rebase
 echo "Checking if comment contains '/rebase' command..."
