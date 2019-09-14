@@ -12,6 +12,7 @@ To configure the action simply add the following lines to your `.github/workflow
 
 ```yml
 on: issue_comment
+types: [created]
 name: Automatic Rebase
 jobs:
   rebase:
