@@ -14,15 +14,15 @@ To configure the action simply add the following lines to your `.github/workflow
 on:
   issue_comment:
     types: [created]
-    name: Automatic Rebase
-    jobs:
-      rebase:
-        name: Rebase
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@master
-        - name: Automatic Rebase
-          uses: cirrus-actions/rebase@master
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  name: Automatic Rebase
+  jobs:
+    rebase:
+      name: Rebase
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@master
+      - name: Automatic Rebase
+        uses: cirrus-actions/rebase@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
