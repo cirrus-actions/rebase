@@ -11,18 +11,17 @@ After installation simply comment `/rebase` to trigger the action:
 To configure the action simply add the following lines to your `.github/workflows/rebase.yml` workflow file:
 
 ```yml
-on:
-  issue_comment:
-    types: [created]
-  name: Automatic Rebase
-  jobs:
-    rebase:
-      name: Rebase
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@master
-      - name: Automatic Rebase
-        uses: cirrus-actions/rebase@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+on: issue_comment:
+  types: [created]
+name: Automatic Rebase
+jobs:
+  rebase:
+    name: Rebase
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Automatic Rebase
+      uses: cirrus-actions/rebase@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
