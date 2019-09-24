@@ -20,8 +20,7 @@ if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
 fi
 
 PR_NUMBER=$(jq -r ".issue.number" "$GITHUB_EVENT_PATH")
-REPO_FULLNAME=$(jq -r ".repository.full_name" "$GITHUB_EVENT_PATH")
-echo "Collecting information about PR #$PR_NUMBER of $REPO_FULLNAME..."
+echo "Collecting information about PR #$PR_NUMBER of $GITHUB_REPOSITORY..."
 
 if [[ -z "$GITHUB_TOKEN" ]]; then
 	echo "Set the GITHUB_TOKEN env variable."
@@ -33,7 +32,7 @@ API_HEADER="Accept: application/vnd.github.v3+json"
 AUTH_HEADER="Authorization: token $GITHUB_TOKEN"
 
 pr_resp=$(curl -X GET -s -H "${AUTH_HEADER}" -H "${API_HEADER}" \
-          "${URI}/repos/$REPO_FULLNAME/pulls/$PR_NUMBER")
+          "${URI}/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")
 
 BASE_REPO=$(echo "$pr_resp" | jq -r .base.repo.full_name)
 BASE_BRANCH=$(echo "$pr_resp" | jq -r .base.ref)
@@ -59,7 +58,7 @@ if [[ "$BASE_REPO" != "$HEAD_REPO" ]]; then
 	exit 1
 fi
 
-git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/$REPO_FULLNAME.git
+git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
 git config --global user.email "action@github.com"
 git config --global user.name "GitHub Action"
 
