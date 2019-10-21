@@ -18,6 +18,7 @@ name: Automatic Rebase
 jobs:
   rebase:
     name: Rebase
+    if: contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
