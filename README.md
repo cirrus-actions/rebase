@@ -18,7 +18,7 @@ name: Automatic Rebase
 jobs:
   rebase:
     name: Rebase
-    if: contains(github.event.comment.body, '/rebase')
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
