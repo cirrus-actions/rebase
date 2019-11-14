@@ -18,7 +18,7 @@ name: Automatic Rebase
 jobs:
   rebase:
     name: Rebase
-    if: contains(github.event.comment.body, '/rebase')
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -26,4 +26,11 @@ jobs:
       uses: cirrus-actions/rebase@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # https://github.community/t5/GitHub-Actions/Workflow-is-failing-if-no-job-can-be-ran-due-to-condition/m-p/38186#M3250
+  always_job:
+    name: Aways run job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Always run
+        run: echo "This job is used to prevent the workflow to fail when all other jobs are skipped."
 ```
