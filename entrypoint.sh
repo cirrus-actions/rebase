@@ -50,7 +50,7 @@ BASE_REPO=$(echo "$pr_resp" | jq -r .base.repo.full_name)
 BASE_BRANCH=$(echo "$pr_resp" | jq -r .base.ref)
 
 USER_LOGIN=$(jq -r ".comment.user.login" "$GITHUB_EVENT_PATH")
-          
+
 if [[ "$USER_LOGIN" == "null" ]]; then
 	USER_LOGIN=$(jq -r ".pull_request.user.login" "$GITHUB_EVENT_PATH")
 fi
@@ -97,7 +97,13 @@ git fetch fork $HEAD_BRANCH
 
 # do the rebase
 git checkout -b fork/$HEAD_BRANCH fork/$HEAD_BRANCH
-git rebase origin/$BASE_BRANCH
+
+# Do an exact check instead of `rebase *` so it's not possible to inject malisios commands
+if [[ $(jq -r ".comment.body" "$GITHUB_EVENT_PATH" | grep -Fq "/rebase --autosquash") -eq 0 ]]; then
+	git rebase --autosquash origin/$BASE_BRANCH
+else
+  git rebase origin/$BASE_BRANCH
+fi
 
 # push back
 git push --force-with-lease fork fork/$HEAD_BRANCH:$HEAD_BRANCH
