@@ -16,8 +16,8 @@ fi
 echo "Collecting information about PR #$PR_NUMBER of $GITHUB_REPOSITORY..."
 
 if [[ -z "$GITHUB_TOKEN" ]]; then
-	echo "Set the GITHUB_TOKEN env variable."
-	exit 1
+  echo "Set the GITHUB_TOKEN env variable."
+  exit 1
 fi
 
 URI=https://api.github.com
@@ -100,7 +100,7 @@ git checkout -b fork/$HEAD_BRANCH fork/$HEAD_BRANCH
 
 # Do an exact check instead of `rebase *` so it's not possible to inject malisios commands
 if [[ $(jq -r ".comment.body" "$GITHUB_EVENT_PATH" | grep -Fq "/rebase --autosquash") -eq 0 ]]; then
-	git rebase --autosquash origin/$BASE_BRANCH
+  git rebase --autosquash origin/$BASE_BRANCH
 else
   git rebase origin/$BASE_BRANCH
 fi
