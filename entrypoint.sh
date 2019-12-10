@@ -70,7 +70,7 @@ git fetch origin $HEAD_BRANCH
 
 # do the rebase
 git checkout -b $HEAD_BRANCH origin/$HEAD_BRANCH
-git rebase origin/$BASE_BRANCH
+git rebase -Xignore-space-change origin/$BASE_BRANCH
 
 # push back
 git push --force-with-lease
