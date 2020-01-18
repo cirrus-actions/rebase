@@ -21,7 +21,7 @@ jobs:
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v1.2.0 # the latest 2.0 version doesn't work
     - name: Automatic Rebase
       uses: cirrus-actions/rebase@1.2
       env:
