@@ -38,6 +38,7 @@ fi
 
 if [[ "$(echo "$pr_resp" | jq -r .rebaseable)" != "true" ]]; then
 	echo "GitHub doesn't think that the PR is rebaseable!"
+	echo "API response: $pr_resp"
 	exit 1
 fi
 
