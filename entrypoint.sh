@@ -53,7 +53,7 @@ HEAD_BRANCH=$(echo "$pr_resp" | jq -r .head.ref)
 
 echo "Base branch for PR #$PR_NUMBER is $BASE_BRANCH"
 
-USER_TOKEN=${USER_LOGIN}_TOKEN
+USER_TOKEN=${USER_LOGIN//-/_}_TOKEN
 COMMITTER_TOKEN=${!USER_TOKEN:-$GITHUB_TOKEN}
 
 git remote set-url origin https://x-access-token:$COMMITTER_TOKEN@github.com/$GITHUB_REPOSITORY.git
