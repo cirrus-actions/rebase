@@ -54,7 +54,8 @@ HEAD_BRANCH=$(echo "$pr_resp" | jq -r .head.ref)
 echo "Base branch for PR #$PR_NUMBER is $BASE_BRANCH"
 
 USER_TOKEN=${USER_LOGIN//-/_}_TOKEN
-COMMITTER_TOKEN=${!USER_TOKEN:-$GITHUB_TOKEN}
+UNTRIMMED_COMMITTER_TOKEN=${!USER_TOKEN:-$GITHUB_TOKEN}
+COMMITTER_TOKEN="$(echo -e "${UNTRIMMED_COMMITTER_TOKEN}" | tr -d '[:space:]')"
 
 git remote set-url origin https://x-access-token:$COMMITTER_TOKEN@github.com/$GITHUB_REPOSITORY.git
 git config --global user.email "$USER_EMAIL"
