@@ -51,7 +51,6 @@ fi
 
 if [[ -z "$BASE_BRANCH" ]]; then
 	echo "Cannot get base branch information for PR #$PR_NUMBER!"
-	echo "API response: $pr_resp"
 	exit 1
 fi
 
