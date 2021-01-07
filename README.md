@@ -11,25 +11,25 @@ After installation simply comment `/rebase` to trigger the action:
 To configure the action simply add the following lines to your `.github/workflows/rebase.yml` workflow file:
 
 ```yaml
-on: 
+name: Automatic Rebase
+on:
   issue_comment:
     types: [created]
-name: Automatic Rebase
 jobs:
   rebase:
     name: Rebase
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout the latest code
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo,
-        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token.
-    - name: Automatic Rebase
-      uses: cirrus-actions/rebase@1.4
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout the latest code
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - name: Automatic Rebase
+        uses: cirrus-actions/rebase@1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 > NOTE: To ensure branch checks run use a [Personal Access Token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
