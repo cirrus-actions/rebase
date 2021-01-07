@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
         env:
@@ -39,6 +39,11 @@ Example
 ```yaml
 
 ... 
+    - name: Checkout the latest code
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT_TOKEN }}
+        fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
     - name: Automatic Rebase
       uses: cirrus-actions/rebase@1.4
       env:
