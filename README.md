@@ -29,8 +29,23 @@ jobs:
     - name: Automatic Rebase
       uses: cirrus-actions/rebase@1.4
       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+> NOTE: To ensure branch checks run use a [Personal Access Token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
+
+Example
+
+```yaml
+
+... 
+    - name: Automatic Rebase
+      uses: cirrus-actions/rebase@1.4
+      env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 ```
+
+
 
 ## Restricting who can call the action
 
