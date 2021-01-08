@@ -32,7 +32,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-> NOTE: To ensure branch checks run use a [Personal Access Token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
+> NOTE: To ensure GitHub Actions will be automatically re-run after a successful rebase action use a workaround of using a [Personal Access Token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token). See the following [discussion](https://github.community/t/triggering-a-new-workflow-from-another-workflow/16250/37) for more details.
 
 Example
 
@@ -58,4 +58,3 @@ It's possible to use `author_association` field of a comment to restrict who can
 
 GitHub can also optionally dismiss an existing review automatically after rebase, so you'll need to re-approve again which will trigger the test workflow.
 Set it up in your repository *Settings* > *Branches* > *Branch protection rules* > *Require pull request reviews before merging* > *Dismiss stale pull request approvals when new commits are pushed*.
-
