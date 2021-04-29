@@ -42,7 +42,12 @@ for ((i = 0 ; i < $MAX_RETRIES ; i++)); do
 done
 
 if [[ "$REBASEABLE" != "true" ]] ; then
+	curl -X POST -s -H "${AUTH_HEADER}" -H "${API_HEADER}" \
+		"${URI}/repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+		-d "{\"body\": \"GitHub doesn't think that the PR is rebaseable!\"}"
+
 	echo "GitHub doesn't think that the PR is rebaseable!"
+	echo "API response: $pr_resp"
 	exit 1
 fi
 
