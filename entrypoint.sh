@@ -21,8 +21,28 @@ URI=https://api.github.com
 API_HEADER="Accept: application/vnd.github.v3+json"
 AUTH_HEADER="Authorization: token $GITHUB_TOKEN"
 
-pr_resp=$(curl -X GET -s -H "${AUTH_HEADER}" -H "${API_HEADER}" \
-          "${URI}/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")
+MAX_RETRIES=${MAX_RETRIES:-6}
+RETRY_INTERVAL=${RETRY_INTERVAL:-10}
+REBASEABLE=""
+pr_resp=""
+for ((i = 0 ; i < $MAX_RETRIES ; i++)); do
+	pr_resp=$(curl -X GET -s -H "${AUTH_HEADER}" -H "${API_HEADER}" \
+		"${URI}/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")
+	REBASEABLE=$(echo "$pr_resp" | jq -r .rebaseable)
+	if [[ "$REBASEABLE" == "null" ]]; then
+		echo "The PR is not ready to rebase, retry after $RETRY_INTERVAL seconds"
+		sleep $RETRY_INTERVAL
+		continue
+	else
+		break
+	fi
+done
+
+if [[ "$REBASEABLE" != "true" || "$i" == "$MAX_RETRIES" ]] ; then
+	echo "GitHub doesn't think that the PR is rebaseable!"
+	echo "API response: $pr_resp"
+	exit 1
+fi
 
 BASE_REPO=$(echo "$pr_resp" | jq -r .base.repo.full_name)
 BASE_BRANCH=$(echo "$pr_resp" | jq -r .base.ref)
@@ -30,7 +50,7 @@ BASE_BRANCH=$(echo "$pr_resp" | jq -r .base.ref)
 USER_LOGIN=$(jq -r ".comment.user.login" "$GITHUB_EVENT_PATH")
 
 user_resp=$(curl -X GET -s -H "${AUTH_HEADER}" -H "${API_HEADER}" \
-            "${URI}/users/${USER_LOGIN}")
+	"${URI}/users/${USER_LOGIN}")
 
 USER_NAME=$(echo "$user_resp" | jq -r ".name")
 if [[ "$USER_NAME" == "null" ]]; then
@@ -41,12 +61,6 @@ USER_NAME="${USER_NAME} (Rebase PR Action)"
 USER_EMAIL=$(echo "$user_resp" | jq -r ".email")
 if [[ "$USER_EMAIL" == "null" ]]; then
 	USER_EMAIL="$USER_LOGIN@users.noreply.github.com"
-fi
-
-if [[ "$(echo "$pr_resp" | jq -r .rebaseable)" != "true" ]]; then
-	echo "GitHub doesn't think that the PR is rebaseable!"
-	echo "API response: $pr_resp"
-	exit 1
 fi
 
 if [[ -z "$BASE_BRANCH" ]]; then
