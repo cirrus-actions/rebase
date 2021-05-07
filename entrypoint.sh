@@ -38,9 +38,8 @@ for ((i = 0 ; i < $MAX_RETRIES ; i++)); do
 	fi
 done
 
-if [[ "$REBASEABLE" != "true" || "$i" == "$MAX_RETRIES" ]] ; then
+if [[ "$REBASEABLE" != "true" ]] ; then
 	echo "GitHub doesn't think that the PR is rebaseable!"
-	echo "API response: $pr_resp"
 	exit 1
 fi
 
