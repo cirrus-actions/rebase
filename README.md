@@ -50,6 +50,17 @@ Example
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 ```
 
+You can also optionally specify the PR number of the branch to rebase,
+if the action you're running doesn't directly refer to a specific
+pull request:
+
+```yaml
+    - name: Automatic Rebase
+      uses: cirrus-actions/rebase@1.4
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        PR_NUMBER: 1245
+```
 
 
 ## Restricting who can call the action
