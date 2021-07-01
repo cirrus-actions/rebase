@@ -100,7 +100,11 @@ git fetch fork $HEAD_BRANCH
 
 # do the rebase
 git checkout -b fork/$HEAD_BRANCH fork/$HEAD_BRANCH
-git rebase origin/$BASE_BRANCH
+if [[ $INPUT_AUTOSQUASH -eq 'true' ]]; then
+	GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash origin/$BASE_BRANCH
+else
+	git rebase origin/$BASE_BRANCH
+fi
 
 # push back
 git push --force-with-lease fork fork/$HEAD_BRANCH:$HEAD_BRANCH
