@@ -4,6 +4,11 @@ maintainer: Cirrus Labs
 runs:
   using: 'docker'
   image: 'Dockerfile'
+inputs:
+  autosquash:
+    description: Should the rebase autosquash fixup and squash commits
+    required: false
+    default: false
 branding:
   icon: git-pull-request
   color: purple
