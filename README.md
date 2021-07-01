@@ -28,6 +28,8 @@ jobs:
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.5
+        with:
+          autosquash: ${{ contains(github.event.comment.body, '/rebase-autosquash') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```

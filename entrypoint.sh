@@ -101,7 +101,7 @@ git fetch fork $HEAD_BRANCH
 # do the rebase
 git checkout -b fork/$HEAD_BRANCH fork/$HEAD_BRANCH
 # Do an exact check instead of `rebase *` so it's not possible to inject malicious commands
-if [[ $(jq -r ".comment.body" "$GITHUB_EVENT_PATH" | grep -Fq "/rebase --autosquash") -eq 0 ]]; then
+if [[ $INPUT_AUTOSQUASH -eq 'true' ]]; then
 	GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash origin/$BASE_BRANCH
 else
 	git rebase origin/$BASE_BRANCH
