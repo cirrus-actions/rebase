@@ -1,0 +1,9 @@
+name: Automatic Rebase
+description: Automatically rebases PR on '/rebase' comment
+maintainer: Cirrus Labs
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: git-pull-request
+  color: purple
