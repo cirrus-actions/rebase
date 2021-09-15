@@ -50,7 +50,7 @@ BASE_REPO=$(echo "$pr_resp" | jq -r .base.repo.full_name)
 BASE_BRANCH=$(echo "$pr_resp" | jq -r .base.ref)
 
 USER_LOGIN=$(jq -r ".comment.user.login" "$GITHUB_EVENT_PATH")
-          
+
 if [[ "$USER_LOGIN" == "null" ]]; then
 	USER_LOGIN=$(jq -r ".pull_request.user.login" "$GITHUB_EVENT_PATH")
 fi
@@ -58,16 +58,8 @@ fi
 user_resp=$(curl -X GET -s -H "${AUTH_HEADER}" -H "${API_HEADER}" \
 	"${URI}/users/${USER_LOGIN}")
 
-USER_NAME=$(echo "$user_resp" | jq -r ".name")
-if [[ "$USER_NAME" == "null" ]]; then
-	USER_NAME=$USER_LOGIN
-fi
-USER_NAME="${USER_NAME} (Rebase PR Action)"
-
-USER_EMAIL=$(echo "$user_resp" | jq -r ".email")
-if [[ "$USER_EMAIL" == "null" ]]; then
-	USER_EMAIL="$USER_LOGIN@users.noreply.github.com"
-fi
+USER_NAME="tricot-dev"
+USER_EMAIL="kono@tricot-inc.com"
 
 if [[ -z "$BASE_BRANCH" ]]; then
 	echo "Cannot get base branch information for PR #$PR_NUMBER!"
