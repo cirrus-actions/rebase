@@ -27,7 +27,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.4
+        uses: cirrus-actions/rebase@1.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -45,7 +45,7 @@ Example
         token: ${{ secrets.PAT_TOKEN }}
         fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
     - name: Automatic Rebase
-      uses: cirrus-actions/rebase@1.4
+      uses: cirrus-actions/rebase@1.5
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 ```
@@ -56,7 +56,7 @@ pull request:
 
 ```yaml
     - name: Automatic Rebase
-      uses: cirrus-actions/rebase@1.4
+      uses: cirrus-actions/rebase@1.5
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         PR_NUMBER: 1245
