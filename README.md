@@ -23,7 +23,7 @@ jobs:
       (
         contains(github.event.comment.body, '/rebase') || 
         contains(github.event.comment.body, '/autosquash')
-      )    runs-on: ubuntu-latest
+      )
     steps:
       - name: Checkout the latest code
         uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.5
+        uses: cirrus-actions/rebase@1.7
         with:
           autosquash: ${{ contains(github.event.comment.body, '/autosquash') || contains(github.event.comment.body, '/rebase-autosquash') }}
         env:
