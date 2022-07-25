@@ -18,6 +18,7 @@ on:
 jobs:
   rebase:
     name: Rebase
+    runs-on: ubuntu-latest
     if: >-
       github.event.issue.pull_request != '' && 
       (
