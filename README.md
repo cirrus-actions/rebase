@@ -18,7 +18,7 @@ on:
 jobs:
   rebase:
     name: Rebase
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, ubuntu-latest]
     if: >-
       github.event.issue.pull_request != '' && 
       (
