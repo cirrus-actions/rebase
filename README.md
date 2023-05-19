@@ -27,12 +27,12 @@ jobs:
       )
     steps:
       - name: Checkout the latest code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.7
+        uses: cirrus-actions/rebase@1.8
         with:
           autosquash: ${{ contains(github.event.comment.body, '/autosquash') || contains(github.event.comment.body, '/rebase-autosquash') }}
         env:
@@ -47,12 +47,12 @@ Example
 
 ... 
     - name: Checkout the latest code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         token: ${{ secrets.PAT_TOKEN }}
         fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
     - name: Automatic Rebase
-      uses: cirrus-actions/rebase@1.5
+      uses: cirrus-actions/rebase@1.8
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 ```
@@ -63,7 +63,7 @@ pull request:
 
 ```yaml
     - name: Automatic Rebase
-      uses: cirrus-actions/rebase@1.5
+      uses: cirrus-actions/rebase@1.8
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         PR_NUMBER: 1245
