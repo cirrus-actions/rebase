@@ -41,16 +41,18 @@ for ((i = 0 ; i < $MAX_RETRIES ; i++)); do
 	fi
 done
 
-if [[ "$REBASEABLE" != "true" ]] ; then
-	echo "GitHub doesn't think that the PR is rebaseable!"
-	exit 1
+if [[ $INPUT_CHANGELOGRESOLVER != 'true' ]]; then
+	if [[ "$REBASEABLE" != "true" ]] ; then
+		echo "GitHub doesn't think that the PR is rebaseable!"
+		exit 1
+	fi
 fi
 
 BASE_REPO=$(echo "$pr_resp" | jq -r .base.repo.full_name)
 BASE_BRANCH=$(echo "$pr_resp" | jq -r .base.ref)
 
 USER_LOGIN=$(jq -r ".comment.user.login" "$GITHUB_EVENT_PATH")
-          
+
 if [[ "$USER_LOGIN" == "null" ]]; then
 	USER_LOGIN=$(jq -r ".pull_request.user.login" "$GITHUB_EVENT_PATH")
 fi
@@ -101,10 +103,41 @@ git fetch fork $HEAD_BRANCH
 # do the rebase
 git checkout -b fork/$HEAD_BRANCH fork/$HEAD_BRANCH
 if [[ $INPUT_AUTOSQUASH -eq 'true' ]]; then
-	GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash origin/$BASE_BRANCH
+	GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash origin/$BASE_BRANCH || failed_rebase=$?
 else
-	git rebase origin/$BASE_BRANCH
+	git rebase origin/$BASE_BRANCH || failed_rebase=$?
 fi
+
+# If rebase conflict arrise for only CHANGELOG, try resolving it:
+if [[ -d .git/rebase-apply ]] || [[ -d .git/rebase-merge ]] || [[ -f .git/REBASE_HEAD ]]; then
+
+	if [[ $INPUT_CHANGELOGRESOLVER != 'true' ]]; then
+		echo "Rebase command failed with merge conflicts"
+		exit 1
+	fi
+
+	unmergedFiles=$(git diff --name-only --diff-filter=U)
+	unmergedFileCount=$(echo "$unmergedFiles" | wc -l)
+	changelogPath=$(echo "$unmergedFiles" | grep -i changelog)
+
+	if [[ -n "$changelogPath" && $unmergedFileCount == '1' ]]; then
+		absPath=$(realpath "$changelogPath")
+		node /resolve-changelog/index.js $absPath && git add $absPath
+		git commit -m "$(git log -n 1 --pretty=format:"%s" ORIG_HEAD)"
+		if [[ $? == 0 ]]; then
+			git rebase --continue
+		fi
+	else
+		echo "Unable to automatically resolve conflicts other than CHANGELOG:"
+		echo "$unmergedFiles"
+	fi
+else
+	if [[ $failed_rebase != 0 ]]; then
+		echo "Rebase command failed"
+		exit 1
+	fi
+fi
+
 
 # push back
 git push --force-with-lease fork fork/$HEAD_BRANCH:$HEAD_BRANCH
