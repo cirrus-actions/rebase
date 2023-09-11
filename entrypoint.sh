@@ -106,5 +106,17 @@ else
 	git rebase origin/$BASE_BRANCH
 fi
 
+# If rebase conflict arrise for only CHANGELOG, try resolving it:
+if [[ $? != 0 ]]; then
+	otherUnmergedFiles=$(git ls-files -u | awk '!visits[$4]++ && $4 != "CHANGELOG.md" { print $4 }' | wc -l)
+
+	if [[ $otherUnmergedFiles == '0' ]]; then
+		node ./resolve-changelog/index.js CHANGELOG.md && git add CHANGELOG.md
+		if [[ $? == 0 ]]; then
+			git rebase --continue
+		fi
+	fi
+fi
+
 # push back
 git push --force-with-lease fork fork/$HEAD_BRANCH:$HEAD_BRANCH
