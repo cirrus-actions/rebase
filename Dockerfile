@@ -10,6 +10,7 @@ LABEL "com.github.actions.icon"="git-pull-request"
 LABEL "com.github.actions.color"="purple"
 
 RUN apk --no-cache add jq bash curl git git-lfs
+RUN apk add --update nodejs npm
 
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
