@@ -1,0 +1,17 @@
+{
+  "name": "resolve-changelog",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "mocha test/*.test.js"
+  },
+  "dependencies": {
+    "mocha": "^10.2.0"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.3.8"
+  }
+}
